@@ -97,8 +97,8 @@ python tools/get_flops.py local_configs/leformer/leformer_256x256_SW_160k.py --s
 
 [//]: # (![]&#40;resources/ablation_study_1.jpg&#41;)
 <div align="center">
-    <img src="./resources/ablation_study_1.jpg" height="500">
-    <img src="./resources/ablation_study_2.jpg" height="500">
+    <img src="./resources/ablation_study_1.jpg" height="450">
+    <img src="./resources/ablation_study_2.jpg" height="450">
 </div>
 <p align="center">
   <p align="center">
