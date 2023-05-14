@@ -2,20 +2,6 @@
 
 ![](resources/overall_architecture_diagram.jpg)
 
-[//]: # (<!-- ![image]&#40;resources/overall_architecture_diagram.png&#41; -->)
-
-[//]: # (<div align="center">)
-
-[//]: # (  <img src="./resources/overall_architecture_diagram.png" height="300">)
-
-[//]: # (</div>)
-
-[//]: # (<p align="center">)
-
-[//]: # (  Figure 1: Overview architecture of LEFormer, consisting of four modules: &#40;1&#41; a hierarchical CNN encoder that extracts local features; &#40;2&#41; a  hierarchical Transformer encoder that captures global features; &#40;3&#41; a  cross-encoder fusion module that modulates local and global features from CNN and Transformer encoders; &#40;4&#41; a lightweight decoder that fuses the multi-scale features from the cross-encoder fusion module to predict the lake mask accurately.)
-
-[//]: # (</p>)
-
 The repository contains official PyTorch implementations of training and evaluation codes and pre-trained models for **LEFormer**.
 
 [//]: # (The paper is in [Here]&#40;https://arxiv.org/pdf/2209.08575.pdf&#41;.)
@@ -30,21 +16,8 @@ For install and data preparation, please refer to the guidelines in [MMSegmentat
 
 [//]: # (```pip install timm==0.6.12```)
 
-An example (works for me): ```CUDA 11.7``` and  ```pytorch 1.12.0``` 
+An example (works for me): ```CUDA 10.1``` and  ```pytorch 1.6.0``` 
 
-[//]: # (```)
-
-[//]: # (pip install torchvision==0.13.0)
-
-[//]: # (pip install timm==0.6.12)
-
-[//]: # (pip install mmcv-full==1.6.0)
-
-[//]: # (pip install opencv-python==4.7.0.68)
-
-[//]: # (cd LEFormer && pip install -e . --user)
-
-[//]: # (```)
 ```
 pip install -U openmim
 mim install mmcv-full
@@ -67,15 +40,10 @@ python tools/train.py local_configs/leformer/leformer_256x256_surface_water_160k
 
 ## Evaluation
 
-Download `weights` 
-(
-[xxx drive]()
-).
-
 Example: evaluate ```LEFormer``` on ```Surface Water```:
 
 ```python
-python tools/test.py local_configs/leformer/leformer_256x256_surface_water_160k.py /path/to/checkpoint_file --eval mIoU mFscore
+python tools/test.py local_configs/leformer/leformer_256x256_surface_water_160k.py local_configs/pretrained_model/leformer_sw.pth --eval mIoU mFscore
 ```
 
 ## FLOPs
