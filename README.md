@@ -16,7 +16,7 @@
 
 [//]: # (</p>)
 
-The repository contains official Pytorch implementations of training and evaluation codes and pre-trained models for **LEFormer**.
+The repository contains official PyTorch implementations of training and evaluation codes and pre-trained models for **LEFormer**.
 
 [//]: # (The paper is in [Here]&#40;https://arxiv.org/pdf/2209.08575.pdf&#41;.)
 
