@@ -1,13 +1,20 @@
 # LEFormer: A Hybrid CNN-Transformer Architecture for Accurate Lake Extraction from Remote Sensing Imagery
 
-[//]: # (![]&#40;resources/overall_architecture_diagram.png&#41;)
-<!-- ![image](resources/overall_architecture_diagram.png) -->
-<div align="center">
-  <img src="./resources/overall_architecture_diagram.png" height="400">
-</div>
-<p align="center">
-  Figure 1: Overview architecture of LEFormer, consisting of four modules: (1) a hierarchical CNN encoder that extracts local features; (2) a  hierarchical Transformer encoder that captures global features; (3) a  cross-encoder fusion module that modulates local and global features from CNN and Transformer encoders; (4) a lightweight decoder that fuses the multi-scale features from the cross-encoder fusion module to predict the lake mask accurately.
-</p>
+![](resources/overall_architecture_diagram.png)
+
+[//]: # (<!-- ![image]&#40;resources/overall_architecture_diagram.png&#41; -->)
+
+[//]: # (<div align="center">)
+
+[//]: # (  <img src="./resources/overall_architecture_diagram.png" height="300">)
+
+[//]: # (</div>)
+
+[//]: # (<p align="center">)
+
+[//]: # (  Figure 1: Overview architecture of LEFormer, consisting of four modules: &#40;1&#41; a hierarchical CNN encoder that extracts local features; &#40;2&#41; a  hierarchical Transformer encoder that captures global features; &#40;3&#41; a  cross-encoder fusion module that modulates local and global features from CNN and Transformer encoders; &#40;4&#41; a lightweight decoder that fuses the multi-scale features from the cross-encoder fusion module to predict the lake mask accurately.)
+
+[//]: # (</p>)
 
 The repository contains official Pytorch implementations of training and evaluation codes and pre-trained models for **LEFormer**.
 
