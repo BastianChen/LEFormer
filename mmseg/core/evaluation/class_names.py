@@ -290,12 +290,10 @@ def occludedface_palette():
 
 
 def qtpl_palette():
-    # return [[0, 0, 0], [38, 38, 38]]
     return [[0, 0, 0], [128, 0, 0]]
 
 
 def surface_water_palette():
-    # return [[0, 0, 0], [50, 50, 50]]
     return [[0, 0, 0], [128, 0, 0]]
 
 
