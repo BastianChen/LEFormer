@@ -35,7 +35,7 @@ We use 1 GPU for training by default.
 Example: train ```LEFormer``` on ```Surface Water```:
 
 ```python
-python tools/train.py local_configs/leformer/leformer_256x256_surface_water_160k.py
+python tools/train.py local_configs/leformer/leformer_256x256_SW_160k.py
 ```
 
 ## Evaluation
@@ -43,7 +43,7 @@ python tools/train.py local_configs/leformer/leformer_256x256_surface_water_160k
 Example: evaluate ```LEFormer``` on ```Surface Water```:
 
 ```python
-python tools/test.py local_configs/leformer/leformer_256x256_surface_water_160k.py local_configs/pretrained_model/leformer_sw.pth --eval mIoU mFscore
+python tools/test.py local_configs/leformer/leformer_256x256_SW_160k.py local_configs/pretrained_models/leformer_sw.pth --eval mIoU mFscore
 ```
 
 ## FLOPs
@@ -53,7 +53,7 @@ To calculate FLOPs for a model.
 Example: calculate ```LEFormer``` on ```Surface Water```:
 
 ```bash
-python tools/get_flops.py local_configs/leformer/leformer_256x256_surface_water_160k.py --shape 256 256
+python tools/get_flops.py local_configs/leformer/leformer_256x256_SW_160k.py --shape 256 256
 ```
 
 [//]: # (## Results)
@@ -92,6 +92,28 @@ python tools/get_flops.py local_configs/leformer/leformer_256x256_surface_water_
 [//]: # (|  SegNeXt  |     MSCAN-B  | IN-1K  | 160K |  82.6/83.8 | 28M | 276G | [config]&#40;local_configs/segnext/base/segnext.base.1024x1024.city.160k.py&#41;  | [TsingHua Cloud]&#40;https://cloud.tsinghua.edu.cn/f/adb49029f66f426bb046/?dl=1&#41; |)
 
 [//]: # (|  SegNeXt  |     MSCAN-L  | IN-1K  | 160K |  83.2/83.9 | 49M | 578G | [config]&#40;local_configs/segnext/large/segnext.large.1024x1024.city.160k.py&#41;  | [TsingHua Cloud]&#40;https://cloud.tsinghua.edu.cn/f/b5308d092b034f81aac0/?dl=1&#41; |)
+
+## Quantitative results of ablation study 
+
+[//]: # (![]&#40;resources/ablation_study_1.jpg&#41;)
+<div align="center">
+    <img src="./resources/ablation_study_1.jpg" height="560">
+    <img src="./resources/ablation_study_2.jpg" height="560">
+</div>
+<p align="center">
+  <p align="center">
+  Figure 1: Visualization results of ablation studies on the SW and QTPL datasets. **Left**: Ablation studies on the number of Pooling Transformer Layers. *L* denotes the number of layers; **Right**: Ablation studies on the CE, MSCA, TE, and pooling operator modules.
+</p>
+</p>
+
+[//]: # (![]&#40;resources/ablation_study_3.jpg&#41;)
+<!-- ![image](resources/ablation_study_3.jpg) -->
+<div align="center">
+  <img src="./resources/ablation_study_3.jpg" height="500">
+</div>
+<p align="center">
+  Figure 2: Visualization results of our proposed LEFormer and other methods on the SW and QTPL datasets for the lake mask extraction. The white circles indicate apparent differences.
+</p>
 
 ## Acknowledgment
 
