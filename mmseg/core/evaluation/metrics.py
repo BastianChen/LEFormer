@@ -63,14 +63,14 @@ def intersect_and_union(pred_label,
     else:
         label = torch.from_numpy(label)
 
-    if reduce_zero_label:
-        label[label == 0] = 255
-        label = label - 1
-        label[label == 254] = 255
     if label_map is not None:
         label_copy = label.clone()
         for old_id, new_id in label_map.items():
             label[label_copy == old_id] = new_id
+    if reduce_zero_label:
+        label[label == 0] = 255
+        label = label - 1
+        label[label == 254] = 255
 
     mask = (label != ignore_index)
     pred_label = pred_label[mask]
@@ -315,7 +315,6 @@ def pre_eval_to_metrics(pre_eval_results,
     # convert list of tuples to tuple of lists, e.g.
     # [(A_1, B_1, C_1, D_1), ...,  (A_n, B_n, C_n, D_n)] to
     # ([A_1, ..., A_n], ..., [D_1, ..., D_n])
-    samples_num = len(pre_eval_results)
     pre_eval_results = tuple(zip(*pre_eval_results))
     assert len(pre_eval_results) == 4
 
@@ -327,7 +326,7 @@ def pre_eval_to_metrics(pre_eval_results,
     ret_metrics = total_area_to_metrics(total_area_intersect, total_area_union,
                                         total_area_pred_label,
                                         total_area_label, metrics, nan_to_num,
-                                        beta, samples_num)
+                                        beta)
 
     return ret_metrics
 
@@ -338,8 +337,7 @@ def total_area_to_metrics(total_area_intersect,
                           total_area_label,
                           metrics=['mIoU'],
                           nan_to_num=None,
-                          beta=1,
-                          samples_num=1):
+                          beta=1):
     """Calculate evaluation metrics
     Args:
         total_area_intersect (ndarray): The intersection of prediction and
