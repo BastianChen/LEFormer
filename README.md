@@ -97,13 +97,12 @@ python tools/get_flops.py local_configs/leformer/leformer_256x256_SW_160k.py --s
 
 [//]: # (![]&#40;resources/ablation_study_1.jpg&#41;)
 <div align="center">
-    <img src="./resources/ablation_study_1.jpg" height="560">
-    <img src="./resources/ablation_study_2.jpg" height="560">
+    <img src="./resources/ablation_study_1.jpg" height="500">
+    <img src="./resources/ablation_study_2.jpg" height="500">
 </div>
 <p align="center">
   <p align="center">
   Figure 1: Visualization results of ablation studies on the SW and QTPL datasets. **Left**: Ablation studies on the number of Pooling Transformer Layers. *L* denotes the number of layers; **Right**: Ablation studies on the CE, MSCA, TE, and pooling operator modules.
-</p>
 </p>
 
 [//]: # (![]&#40;resources/ablation_study_3.jpg&#41;)
