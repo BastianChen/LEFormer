@@ -1,6 +1,6 @@
 # LEFormer: A Hybrid CNN-Transformer Architecture for Accurate Lake Extraction from Remote Sensing Imagery
 
-![](resources/overall_architecture_diagram.png)
+![](resources/overall_architecture_diagram.jpg)
 
 [//]: # (<!-- ![image]&#40;resources/overall_architecture_diagram.png&#41; -->)
 
