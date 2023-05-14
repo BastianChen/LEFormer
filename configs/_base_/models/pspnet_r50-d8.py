@@ -2,7 +2,7 @@
 norm_cfg = dict(type='SyncBN', requires_grad=True)
 model = dict(
     type='EncoderDecoder',
-    pretrained='/gpfs/home/chenben/models/DeeplabV3/resnet50_v1c-2cccc1ad.pth',
+    pretrained='open-mmlab://resnet50_v1c',
     backbone=dict(
         type='ResNetV1c',
         depth=50,
@@ -34,7 +34,7 @@ model = dict(
         num_convs=1,
         concat_input=False,
         dropout_ratio=0.1,
-        num_classes=2,
+        num_classes=19,
         norm_cfg=norm_cfg,
         align_corners=False,
         loss_decode=dict(
