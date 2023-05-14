@@ -1,6 +1,5 @@
 # model settings
 norm_cfg = dict(type='SyncBN', requires_grad=True)
-# ham_norm_cfg = dict(type='GN', num_groups=32, requires_grad=True)
 model = dict(
     type='EncoderDecoder',
     pretrained=None,
@@ -15,15 +14,6 @@ model = dict(
         strides=[4, 2, 2, 2],
         sr_ratios=[8, 4, 2, 1],
         out_indices=(0, 1, 2, 3),
-        # num_stages=3,
-        # num_layers=[2, 2, 4],
-        # num_heads=[1, 2, 5],
-        # # num_layers=[2, 3, 4],
-        # # num_heads=[1, 2, 6],
-        # patch_sizes=[7, 3, 3],
-        # strides=[4, 2, 2],
-        # sr_ratios=[8, 4, 2],
-        # out_indices=(0, 1, 2),
         mlp_ratio=4,
         qkv_bias=True,
         drop_rate=0.0,
@@ -35,12 +25,6 @@ model = dict(
         in_channels=[32, 64, 160, 192],
         in_index=[0, 1, 2, 3],
         channels=192,
-        # in_channels=[32, 64, 160],
-        # in_index=[0, 1, 2],
-        # channels=160,
-        # in_channels=[32, 64, 192],
-        # in_index=[0, 1, 2],
-        # channels=192,
         dropout_ratio=0.1,
         num_classes=2,
         norm_cfg=norm_cfg,

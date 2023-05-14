@@ -6,7 +6,7 @@ import torch
 import torch.nn as nn
 import torch.utils.checkpoint as cp
 from typing import Sequence
-from mmcv.cnn import Conv2d, build_activation_layer, build_norm_layer
+from mmcv.cnn import Conv2d
 from mmcv.cnn.bricks.drop import build_dropout
 from mmcv.cnn.bricks.transformer import MultiheadAttention
 from mmcv.cnn.bricks import DropPath, build_activation_layer, build_norm_layer
@@ -19,6 +19,23 @@ from ..utils import PatchEmbed, nchw_to_nlc, nlc_to_nchw
 
 
 class DepthWiseConvModule(BaseModule):
+    """An implementation of one Depth-wise Conv Module of LEFormer.
+
+    Args:
+        embed_dims (int): The feature dimension.
+        feedforward_channels (int): The hidden dimension for FFNs.
+        output_channels (int): The output channles of each cnn encoder layer.
+        kernel_size (int): The kernel size of Conv2d. Default: 3.
+        stride (int): The stride of Conv2d. Default: 2.
+        padding (int): The padding of Conv2d. Default: 1.
+        act_cfg (dict): The activation config for FFNs.
+            Default: dict(type='GELU').
+        ffn_drop (float, optional): Probability of an element to be
+            zeroed in FFN. Default: 0.0.
+        init_cfg (dict, optional): Initialization config dict.
+            Default: None.
+    """
+
     def __init__(self,
                  embed_dims,
                  feedforward_channels,
@@ -51,10 +68,8 @@ class DepthWiseConvModule(BaseModule):
             kernel_size=1,
             stride=1,
             bias=True)
-        # bn = nn.BatchNorm2d(feedforward_channels)
         drop = nn.Dropout(ffn_drop)
         layers = [fc1, pe_conv, self.activate, drop, fc2, drop]
-        # layers = [fc1, pe_conv, bn, self.activate, drop, fc2, drop]
         self.layers = Sequential(*layers)
 
     def forward(self, x):
@@ -75,7 +90,7 @@ class MixFFN(BaseModule):
         act_cfg (dict, optional): The activation config for FFNs.
             Default: dict(type='ReLU')
         ffn_drop (float, optional): Probability of an element to be
-            zeroed in FFN. Default 0.0.
+            zeroed in FFN. Default: 0.0.
         dropout_layer (obj:`ConfigDict`): The dropout_layer used
             when adding the shortcut.
         init_cfg (obj:`mmcv.ConfigDict`): The Config for initialization.
@@ -133,64 +148,11 @@ class MixFFN(BaseModule):
         return identity + self.dropout_layer(out)
 
 
-# class Pooling(BaseModule):
-#     """
-#     Implementation of pooling for LEFormer
-#     --pool_size: pooling size
-#     """
-#
-#     def __init__(self, pool_size=3):
-#         super().__init__()
-#         # self.pool = nn.MaxPool2d(
-#         #     pool_size, stride=1, padding=pool_size // 2)
-#         self.pool = nn.AvgPool2d(
-#             pool_size, stride=1, padding=pool_size // 2, count_include_pad=False)
-#
-#     def forward(self, x):
-#         return self.pool(x) - x
-
-# class PatchEmbed(nn.Module):
-#     """Patch Embedding module implemented by a layer of convolution.
-#
-#     Input: tensor in shape [B, C, H, W]
-#     Output: tensor in shape [B, C, H/stride, W/stride]
-#     Args:
-#         patch_size (int): Patch size of the patch embedding. Defaults to 16.
-#         stride (int): Stride of the patch embedding. Defaults to 16.
-#         padding (int): Padding of the patch embedding. Defaults to 0.
-#         in_chans (int): Input channels. Defaults to 3.
-#         embed_dim (int): Output dimension of the patch embedding.
-#             Defaults to 768.
-#         norm_layer (module): Normalization module. Defaults to None (not use).
-#     """
-#
-#     def __init__(self,
-#                  patch_size=16,
-#                  stride=16,
-#                  padding=0,
-#                  in_chans=3,
-#                  embed_dim=768,
-#                  norm_layer=None):
-#         super().__init__()
-#         self.proj = nn.Conv2d(
-#             in_chans,
-#             embed_dim,
-#             kernel_size=patch_size,
-#             stride=stride,
-#             padding=padding)
-#         self.norm = norm_layer(embed_dim) if norm_layer else nn.Identity()
-#
-#     def forward(self, x):
-#         x = self.proj(x)
-#         x = self.norm(x)
-#         return x
-
-
 class Pooling(nn.Module):
     """Pooling module.
 
     Args:
-        pool_size (int): Pooling size. Defaults to 3.
+        pool_size (int): Pooling size. Defaults: 3.
     """
 
     def __init__(self, pool_size=3):
@@ -246,7 +208,7 @@ class PoolingBlock(BaseModule):
     """PoolFormer Block.
 
     Args:
-        dim (int): Embedding dim.
+        embed_dims (int): The feature dimension.
         pool_size (int): Pooling size. Defaults to 3.
         mlp_ratio (float): Mlp expansion ratio. Defaults to 4.
         norm_cfg (dict): The config dict for norm layers.
@@ -321,7 +283,9 @@ class EfficientMultiheadAttention(MultiheadAttention):
         norm_cfg (dict): Config dict for normalization layer.
             Default: dict(type='LN').
         sr_ratio (int): The ratio of spatial reduction of Efficient Multi-head
-            Attention of Segformer. Default: 1.
+            Attention of LEFormer. Default: 1.
+        pool_size (int): Pooling size. Default: 3.
+        pool (bool): Whether to use Pooling Transformer Layer. Default: False.
     """
 
     def __init__(self,
@@ -361,7 +325,6 @@ class EfficientMultiheadAttention(MultiheadAttention):
                 # The ret[0] of build_norm_layer is norm name.
                 self.norm = build_norm_layer(norm_cfg, embed_dims)[1]
         else:
-            # self.token_mixer = Pooling(pool_size=pool_size)
             self.pool_former_block = PoolingBlock(
                 embed_dims=embed_dims,
                 pool_size=pool_size
@@ -438,7 +401,7 @@ class EfficientMultiheadAttention(MultiheadAttention):
 
 
 class TransformerEncoderLayer(BaseModule):
-    """Implements one encoder layer in LEFormer.
+    """Implements one transformer encoder layer in LEFormer.
 
     Args:
         embed_dims (int): The feature dimension.
@@ -461,9 +424,11 @@ class TransformerEncoderLayer(BaseModule):
         init_cfg (dict, optional): Initialization config dict.
             Default:None.
         sr_ratio (int): The ratio of spatial reduction of Efficient Multi-head
-            Attention of Segformer. Default: 1.
+            Attention of LEFormer. Default: 1.
         with_cp (bool): Use checkpoint or not. Using checkpoint will save
             some memory while slowing down the training speed. Default: False.
+        pool_size (int): Pooling size. Default: 3.
+        pool (bool): Whether to use Pooling Transformer Layer. Default: False.
     """
 
     def __init__(self,
@@ -530,6 +495,12 @@ class TransformerEncoderLayer(BaseModule):
 
 
 class ChannelAttentionModule(BaseModule):
+    """An implementation of one Channel Attention Module of LEFormer.
+
+        Args:
+            embed_dims (int): The embedding dimension.
+    """
+
     def __init__(self, embed_dims):
         super(ChannelAttentionModule, self).__init__()
         self.avg_pool = nn.AdaptiveAvgPool2d(1)
@@ -551,23 +522,19 @@ class ChannelAttentionModule(BaseModule):
 
 
 class SpatialAttentionModule(BaseModule):
+    """An implementation of one Spatial Attention Module of LEFormer.
+
+        Args:
+            kernel_size (int): The kernel size of Conv2d. Default: 3.
+    """
+
     def __init__(self, kernel_size=3):
         super(SpatialAttentionModule, self).__init__()
 
         # assert kernel_size in (3, 7), 'kernel size must be 3 or 7'
         padding = 3 if kernel_size == 7 else 1
 
-        # if kernel_size == 3:
-        #     padding = 1
-        # elif kernel_size == 5:
-        #     padding = 2
-        # elif kernel_size == 7:
-        #     padding = 3
-        # else:
-        #     padding = 4
-
         self.conv1 = Conv2d(2, 1, kernel_size, padding=padding, bias=False)
-        # self.conv1 = Conv2d(2, 1, 3, padding=padding, bias=False, dilation=padding)
         self.sigmoid = nn.Sigmoid()
 
     def forward(self, x):
@@ -579,15 +546,17 @@ class SpatialAttentionModule(BaseModule):
 
 
 class MultiscaleCBAMLayer(BaseModule):
+    """An implementation of Multiscale CBAM layer of LEFormer.
+
+        Args:
+            embed_dims (int): The feature dimension.
+            kernel_size (int): The kernel size of Conv2d. Default: 7.
+        """
+
     def __init__(self, embed_dims, kernel_size=7):
         super(MultiscaleCBAMLayer, self).__init__()
         self.channel_attention = ChannelAttentionModule(embed_dims // 4)
         self.spatial_attention = SpatialAttentionModule(kernel_size)
-        # self.multiscale_spatial_attention = nn.ModuleList()
-        # for i in range(1, 5):
-        #     self.multiscale_spatial_attention.append(
-        #         SpatialAttentionModule(2 * i + 1)
-        #     )
         self.multiscale_conv = nn.ModuleList()
         for i in range(1, 5):
             self.multiscale_conv.append(
@@ -602,14 +571,6 @@ class MultiscaleCBAMLayer(BaseModule):
             )
 
     def forward(self, x):
-        # out = self.channel_attention(x) * x
-        # outs = torch.split(out, out.shape[1]//4, dim=1)
-        # out_list = []
-        # for (i, out) in enumerate(outs):
-        #     out = self.multiscale_spatial_attention[i](out) * out
-        #     out_list.append(out)
-        # out = torch.cat(out_list, dim=1)
-
         outs = torch.split(x, x.shape[1] // 4, dim=1)
         out_list = []
         for (i, out) in enumerate(outs):
@@ -617,12 +578,28 @@ class MultiscaleCBAMLayer(BaseModule):
             out = self.channel_attention(out) * out
             out_list.append(out)
         out = torch.cat(out_list, dim=1)
-        # out = self.channel_attention(out) * out
         out = self.spatial_attention(out) * out
         return out
 
 
 class CnnEncoderLayer(BaseModule):
+    """Implements one cnn encoder layer in LEFormer.
+
+        Args:
+            embed_dims (int): The feature dimension.
+            feedforward_channels (int): The hidden dimension for FFNs.
+            output_channels (int): The output channles of each cnn encoder layer.
+            kernel_size (int): The kernel size of Conv2d. Default: 3.
+            stride (int): The stride of Conv2d. Default: 2.
+            padding (int): The padding of Conv2d. Default: 0.
+            act_cfg (dict): The activation config for FFNs.
+                Default: dict(type='GELU').
+            ffn_drop (float, optional): Probability of an element to be
+                zeroed in FFN. Default 0.0.
+            init_cfg (dict, optional): Initialization config dict.
+                Default: None.
+        """
+
     def __init__(self,
                  embed_dims,
                  feedforward_channels,
@@ -651,8 +628,6 @@ class CnnEncoderLayer(BaseModule):
                                           ffn_drop=ffn_drop)
 
         self.multiscale_cbam = MultiscaleCBAMLayer(output_channels, kernel_size)
-        # self.dropout_layer = build_dropout(
-        #     dropout_layer) if dropout_layer else torch.nn.Identity()
 
     def forward(self, x):
         out = self.layers(x)
@@ -664,17 +639,17 @@ class CnnEncoderLayer(BaseModule):
 class LEFormer(BaseModule):
     """The backbone of LEFormer.
 
-    This backbone is the implementation of `SegFormer: Simple and
+    This backbone is the implementation of `LEFormer: Simple and
     Efficient Design for Semantic Segmentation with
     Transformers <https://arxiv.org/abs/2105.15203>`_.
     Args:
         in_channels (int): Number of input channels. Default: 3.
-        embed_dims (int): Embedding dimension. Default: 768.
+        embed_dims (int): Embedding dimension. Default: 32.
         num_stags (int): The num of stages. Default: 4.
         num_layers (Sequence[int]): The layer number of each transformer encode
-            layer. Default: [3, 4, 6, 3].
+            layer. Default: [2, 2, 2, 3].
         num_heads (Sequence[int]): The attention heads of each transformer
-            encode layer. Default: [1, 2, 4, 8].
+            encode layer. Default: [1, 2, 5, 6].
         patch_sizes (Sequence[int]): The patch_size of each overlapped patch
             embedding. Default: [7, 3, 3, 3].
         strides (Sequence[int]): The stride of each overlapped patch embedding.
@@ -690,9 +665,10 @@ class LEFormer(BaseModule):
             Default 0.0
         attn_drop_rate (float): The drop out rate for attention layer.
             Default 0.0
-        drop_path_rate (float): stochastic depth rate. Default 0.0
+        drop_path_rate (float): stochastic depth rate. Default 0.1.
         norm_cfg (dict): Config dict for normalization layer.
             Default: dict(type='LN')
+        pool_numbers (int): the number of Pooling Transformer Layers. Default 1.
         act_cfg (dict): The activation config for FFNs.
             Default: dict(type='GELU').
         pretrained (str, optional): model pretrained path. Default: None.
@@ -704,19 +680,19 @@ class LEFormer(BaseModule):
 
     def __init__(self,
                  in_channels=3,
-                 embed_dims=64,
-                 num_stages=3,
-                 num_layers=(2, 2, 4),
-                 num_heads=(1, 2, 5),
-                 patch_sizes=(7, 3, 3),
-                 strides=(4, 2, 2),
-                 sr_ratios=(8, 4, 2),
-                 out_indices=(0, 1, 2),
+                 embed_dims=32,
+                 num_stages=4,
+                 num_layers=(2, 2, 2, 3),
+                 num_heads=(1, 2, 5, 6),
+                 patch_sizes=(7, 3, 3, 3),
+                 strides=(4, 2, 2, 2),
+                 sr_ratios=(8, 4, 2, 1),
+                 out_indices=(0, 1, 2, 3),
                  mlp_ratio=4,
                  qkv_bias=True,
-                 drop_rate=0.,
-                 attn_drop_rate=0.,
-                 drop_path_rate=0.,
+                 drop_rate=0.0,
+                 attn_drop_rate=0.0,
+                 drop_path_rate=0.1,
                  pool_numbers=1,
                  act_cfg=dict(type='GELU'),
                  norm_cfg=dict(type='LN', eps=1e-6),
@@ -743,7 +719,6 @@ class LEFormer(BaseModule):
         self.strides = strides
         self.sr_ratios = sr_ratios
         self.with_cp = with_cp
-        # self.activate = build_activation_layer(act_cfg)
         assert num_stages == len(num_layers) == len(num_heads) \
                == len(patch_sizes) == len(strides) == len(sr_ratios)
 
@@ -793,34 +768,8 @@ class LEFormer(BaseModule):
             self.transformer_encoder_layers.append(ModuleList([patch_embed, layer, norm]))
             cur += num_layer
 
-        # self.pre = DepthWiseConvModule(embed_dims=self.in_channels,
-        #                                feedforward_channels=embed_dims_list[0],
-        #                                output_channels=embed_dims_list[0],
-        #                                act_cfg=dict(type='GELU'))
-
         self.cnn_encoder_layers = nn.ModuleList()
         self.fusion_conv_layers = nn.ModuleList()
-        # for i in range(num_stages):
-        #     self.cnn_encoder_layers.append(
-        #         CnnEncoderLayer(
-        #             embed_dims=embed_dims_list[0] if i == 0 else embed_dims_list[i - 1],
-        #             feedforward_channels=feedforward_channels_list[i],
-        #             output_channels=embed_dims_list[i],
-        #             kernel_size=patch_sizes[i],
-        #             stride=strides[i],
-        #             padding=patch_sizes[i] // 2,
-        #             ffn_drop=drop_rate
-        #         )
-        #     )
-        #     self.fusion_conv_layers.append(
-        #         Conv2d(
-        #             in_channels=embed_dims_list[i] * 2,
-        #             out_channels=embed_dims_list[i],
-        #             kernel_size=1,
-        #             stride=1,
-        #             padding=0,
-        #             bias=True)
-        #     )
 
         for i in range(num_stages):
             self.cnn_encoder_layers.append(
@@ -863,7 +812,6 @@ class LEFormer(BaseModule):
     def forward(self, x):
         outs = []
         cnn_encoder_out = x
-        # cnn_encoder_out = self.pre(x)
 
         for i, (cnn_encoder_layer, transformer_encoder_layer) in enumerate(
                 zip(self.cnn_encoder_layers, self.transformer_encoder_layers)):
@@ -879,29 +827,3 @@ class LEFormer(BaseModule):
             if i in self.out_indices:
                 outs.append(x)
         return outs
-
-    # without cnn_encoder
-    # def forward(self, x):
-    #     outs = []
-    #
-    #     for i, transformer_encoder_layer in enumerate(self.transformer_encoder_layers):
-    #         x, hw_shape = transformer_encoder_layer[0](x)
-    #         for block in transformer_encoder_layer[1]:
-    #             x = block(x, hw_shape)
-    #         x = transformer_encoder_layer[2](x)
-    #         x = nlc_to_nchw(x, hw_shape)
-    #
-    #         if i in self.out_indices:
-    #             outs.append(x)
-    #     return outs
-
-    # without transformer_encoder
-    # def forward(self, x):
-    #     outs = []
-    #
-    #     # cnn_encoder_out = self.pre(x)
-    #
-    #     for cnn_encoder_layer in self.cnn_encoder_layers:
-    #         x = cnn_encoder_layer(x)
-    #         outs.append(x)
-    #     return outs
