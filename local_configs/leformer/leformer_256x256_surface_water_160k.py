@@ -3,9 +3,6 @@ _base_ = [
     '../_base_/default_runtime.py', '../_base_/schedules/schedule_160k.py'
 ]
 
-# checkpoint = '/gpfs/home/chenben/models/LEFormer/leformer.pth'  # noqa
-# checkpoint = '/gpfs/home/chenben/models/pre_train/leformer_qtpl_160k.pth'
-
 model = dict(pretrained=None, decode_head=dict(num_classes=2))
 
 # optimizer

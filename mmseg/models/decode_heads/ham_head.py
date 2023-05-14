@@ -81,8 +81,7 @@ class Matrix_Decomposition_2D_Base(nn.Module):
         D = C // self.S
         N = H * W
         x = x.view(B * self.S, D, N)
-        # cuda = 'cuda' in str(x.device)
-        cuda = os.getenv('CUDA_VISIBLE_DEVICES')
+        cuda = 'cuda' in str(x.device)
         if not self.rand_init and not hasattr(self, 'bases'):
             bases = self._build_bases(1, self.S, D, self.R, cuda=cuda)
             self.register_buffer('bases', bases)
@@ -121,9 +120,7 @@ class NMF2D(Matrix_Decomposition_2D_Base):
     def _build_bases(self, B, S, D, R, cuda=False):
         """Build bases in initialization."""
         if cuda:
-            # bases = torch.rand((B * S, D, R)).cuda()
-            device = os.getenv('CUDA_VISIBLE_DEVICES')
-            bases = torch.rand((B * S, D, R)).to(device)
+            bases = torch.rand((B * S, D, R)).cuda()
         else:
             bases = torch.rand((B * S, D, R))
 

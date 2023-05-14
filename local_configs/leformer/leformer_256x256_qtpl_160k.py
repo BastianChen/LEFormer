@@ -3,8 +3,6 @@ _base_ = [
     '../_base_/default_runtime.py', '../_base_/schedules/schedule_160k.py'
 ]
 
-# checkpoint = '/gpfs/home/chenben/models/LEFormer/leformer.pth'
-
 model = dict(pretrained=None, decode_head=dict(num_classes=2))
 
 # optimizer
@@ -32,27 +30,3 @@ lr_config = dict(
     by_epoch=False)
 
 data = dict(samples_per_gpu=16, workers_per_gpu=4)
-
-# optimizer = dict(
-#     _delete_=True,
-#     type='Adadelta',
-#     lr=0.1,
-#     weight_decay=0.01,
-#     paramwise_cfg=dict(
-#         custom_keys={
-#             'pos_block': dict(decay_mult=0.),
-#             'norm': dict(decay_mult=0.),
-#             'head': dict(lr_mult=10.)
-#         }))
-#
-# lr_config = dict(
-#     _delete_=True,
-#     policy='poly',
-#     warmup='linear',
-#     warmup_iters=1500,
-#     warmup_ratio=1e-6,
-#     power=0.9,
-#     min_lr=0.0,
-#     by_epoch=False)
-#
-# data = dict(samples_per_gpu=4, workers_per_gpu=1)
