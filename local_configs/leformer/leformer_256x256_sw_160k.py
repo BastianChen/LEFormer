@@ -1,5 +1,5 @@
 _base_ = [
-    '../_base_/models/leformer.py', '../_base_/datasets/surface_water_256x256.py',
+    '../_base_/models/leformer.py', '../_base_/datasets/sw_256x256.py',
     '../_base_/default_runtime.py', '../_base_/schedules/schedule_160k.py'
 ]
 
