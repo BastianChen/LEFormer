@@ -21,7 +21,9 @@ cd LEFormer && pip install -e . --user
 ```
 
 ## Datasets Preparation
-The Surface Water dataset (SW dataset) and Qinghai-Tibet Plateau Lake dataset (QTPL dataset) can be  download from [here](https://aistudio.baidu.com/aistudio/datasetdetail/75148). 
+
+[//]: # (The Surface Water dataset &#40;SW dataset&#41; and Qinghai-Tibet Plateau Lake dataset &#40;QTPL dataset&#41; can be  download from [here]&#40;https://pan.baidu.com/s/1H2d6h3p3PtZw-g7PhNx9Tw?pwd=p0t7&#41;. )
+After the paper has been accepted, we will make the download links for the Surface Water dataset (SW dataset) and the Qinghai-Tibet Plateau Lake dataset (QTPL dataset) that we used available.
 
 The structure of datasets are aligned as follows:
 ```
@@ -48,7 +50,7 @@ Example: split ```Surface Water```:
 python tools/data_split.py --dataset_type sw --dataset_path /path/to/your/surface_water/train_data --save_path /path/to/save/dataset
 ```
 
-Example: split ```QTPL Water```:
+Example: split ```Qinghai-Tibet Plateau Lake```:
 ```python
 python tools/data_split.py --dataset_type qtpl --dataset_path /path/to/your/LakeWater --save_path /path/to/save/dataset
 ```
@@ -56,7 +58,7 @@ python tools/data_split.py --dataset_type qtpl --dataset_path /path/to/your/Lake
 
 ## Training
 
-We use 1 GPU for training by default. Make sure you have modified the `data_root` variable in [surface_water_256x256.py](local_configs/_base_/datasets/surface_water_256x256.py) or [qtpl_256x256.py](local_configs/_base_/datasets/qtpl_256x256.py).    
+We use 1 GPU for training by default. Make sure you have modified the `data_root` variable in [sw_256x256.py](local_configs/_base_/datasets/sw_256x256.py) or [qtpl_256x256.py](local_configs/_base_/datasets/qtpl_256x256.py).    
 
 Example: train ```LEFormer``` on ```Surface Water```:
 
@@ -65,7 +67,7 @@ python tools/train.py local_configs/leformer/leformer_256x256_sw_160k.py
 ```
 
 ## Evaluation
-To evaluate the model. Make sure you have modified the `data_root` variable in [surface_water_256x256.py](local_configs/_base_/datasets/surface_water_256x256.py) or [qtpl_256x256.py](local_configs/_base_/datasets/qtpl_256x256.py).  
+To evaluate the model. Make sure you have modified the `data_root` variable in [sw_256x256.py](local_configs/_base_/datasets/sw_256x256.py) or [qtpl_256x256.py](local_configs/_base_/datasets/qtpl_256x256.py).  
 
 Example: evaluate ```LEFormer``` on ```Surface Water```:
 
@@ -110,20 +112,5 @@ Our implementation is mainly based on [MMSegmentaion](https://github.com/open-mm
 </div>
 <p align="center">
   <p align="center">
-  Figure 2: Visualization results of ablation studies on the CE, MSCA, TE, and pooling operator modules.
+  Figure 2: Visualization results of ablation studies on the CE, MSCA, TE and pooling operator modules.
 </p>
-
-[//]: # ([//]: # &#40;![]&#40;resources/ablation_study_3.jpg&#41;&#41;)
-[//]: # (<!-- ![image]&#40;resources/ablation_study_3.jpg&#41; -->)
-
-[//]: # (<div align="center">)
-
-[//]: # (  <img src="./resources/ablation_study_3.jpg" height="500">)
-
-[//]: # (</div>)
-
-[//]: # (<p align="center">)
-
-[//]: # (  Figure 2: Visualization results of our proposed LEFormer and other methods on the SW and QTPL datasets for the lake mask extraction. The white circles indicate apparent differences.)
-
-[//]: # (</p>)
