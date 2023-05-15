@@ -2,7 +2,7 @@
 
 [//]: # (![]&#40;resources/overall_architecture_diagram.jpg&#41;)
 <p align="center">
-    <img src="./resources/overall_architecture_diagram.jpg" height="550">
+    <img src="./resources/overall_architecture_diagram.jpg">
 </p>
 
 Figure 1: Overview architecture of LEFormer, consisting of four modules: (1) a hierarchical CNN encoder that extracts local features; (2) a  hierarchical Transformer encoder that captures global features; (3) a  cross-encoder fusion module that modulates local and global features from CNN and Transformer encoders; (4) a lightweight decoder that fuses the multi-scale features from the cross-encoder fusion module to predict the lake mask accurately.
