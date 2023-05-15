@@ -93,7 +93,7 @@ Our implementation is mainly based on [MMSegmentaion](https://github.com/open-mm
 ### Quantitative results of ablation study
 
 <div align="center">
-    <img src="./resources/ablation_study_1.jpg" height="700">
+    <img src="./resources/ablation_study_1.jpg" height="650">
 </div>
 <p align="center">
   <p align="center">
@@ -101,7 +101,7 @@ Our implementation is mainly based on [MMSegmentaion](https://github.com/open-mm
 </p>
 
 <div align="center">
-    <img src="./resources/ablation_study_2.jpg" height="600">
+    <img src="./resources/ablation_study_2.jpg" height="550">
 </div>
 <p align="center">
   <p align="center">
