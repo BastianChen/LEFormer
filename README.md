@@ -45,7 +45,12 @@ The original QTPL dataset is freely available for download [here](http://www.ncd
 
 Example: split ```Surface Water```:
 ```python
-python tools/data_split.py --dataset_type sw --dataset_path /path/to/your/dataset --save_path /path/to/save/dataset
+python tools/data_split.py --dataset_type sw --dataset_path /path/to/your/surface_water/train_data --save_path /path/to/save/dataset
+```
+
+Example: split ```QTPL Water```:
+```python
+python tools/data_split.py --dataset_type qtpl --dataset_path /path/to/your/LakeWater --save_path /path/to/save/dataset
 ```
 
 
