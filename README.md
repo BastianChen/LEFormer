@@ -58,7 +58,7 @@ We use 1 GPU for training by default.
 Example: train ```LEFormer``` on ```Surface Water```:
 
 ```python
-python tools/train.py local_configs/leformer/leformer_256x256_SW_160k.py
+python tools/train.py local_configs/leformer/leformer_256x256_sw_160k.py
 ```
 
 ## Evaluation
@@ -67,7 +67,7 @@ To evaluate the model.
 Example: evaluate ```LEFormer``` on ```Surface Water```:
 
 ```python
-python tools/test.py local_configs/leformer/leformer_256x256_SW_160k.py local_configs/pretrained_models/leformer_sw.pth --eval mIoU mFscore
+python tools/test.py local_configs/leformer/leformer_256x256_sw_160k.py local_configs/pretrained_models/leformer_sw.pth --eval mIoU mFscore
 ```
 
 ## FLOPs
@@ -77,7 +77,7 @@ To calculate FLOPs for a model.
 Example: calculate ```LEFormer``` on ```Surface Water```:
 
 ```python
-python tools/get_flops.py local_configs/leformer/leformer_256x256_SW_160k.py --shape 256 256
+python tools/get_flops.py local_configs/leformer/leformer_256x256_sw_160k.py --shape 256 256
 ```
 
 ## Acknowledgment
