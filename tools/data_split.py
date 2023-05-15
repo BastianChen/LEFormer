@@ -3,6 +3,7 @@ import cv2
 import os
 import argparse
 import numpy as np
+from tqdm import tqdm
 
 
 def parse_args():
@@ -38,31 +39,69 @@ def main():
 
     num_training = 0
     num_validation = 0
-    for index in range(total_images_length):
-        if index == 5:
-            break
-        image_name = f"{dataset_img_path}/{index}.jpg"
-        image = cv2.imread(image_name)
-        if args.dataset_type == 'sw':
+    if args.dataset_type == 'sw':
+        for index in tqdm(range(total_images_length)):
+            image_name = f"{dataset_img_path}/{index}.jpg"
+            image = cv2.imread(image_name)
             label_name = f"{dataset_label_path}/{index}_vis.png"
             binary_label_name = f"{dataset_path}/{index}.png"
             label = cv2.imread(label_name, 0)
             binary_label = cv2.imread(binary_label_name, 0)
-        else:
-            label_name = f"{dataset_label_path}/{index}.png"
+
+            if index in random_set:
+                images_validation_path = f"{save_path}/images/validation"
+                annotations_validation_path = f"{save_path}/annotations/validation"
+                binary_annotations_validation_path = f"{save_path}/binary_annotations/validation"
+                for item in [images_validation_path, annotations_validation_path, binary_annotations_validation_path]:
+                    if not os.path.exists(item):
+                        os.makedirs(item, exist_ok=True)
+                cv2.imwrite(f"{images_validation_path}/val_{num_validation}.jpg", image)
+                cv2.imwrite(f"{annotations_validation_path}/val_{num_validation}.png", label)
+                cv2.imwrite(f"{binary_annotations_validation_path}/val_{num_validation}.png", binary_label)
+                num_validation += 1
+            else:
+                images_training_path = f"{save_path}/images/training"
+                annotations_training_path = f"{save_path}/annotations/training"
+                binary_annotations_training_path = f"{save_path}/binary_annotations/training"
+                for item in [images_training_path, annotations_training_path, binary_annotations_training_path]:
+                    if not os.path.exists(item):
+                        os.makedirs(item, exist_ok=True)
+                cv2.imwrite(f"{images_training_path}/training_{num_training}.jpg", image)
+                cv2.imwrite(f"{annotations_training_path}/training_{num_training}.png", label)
+                cv2.imwrite(f"{binary_annotations_training_path}/training_{num_training}.png", binary_label)
+                num_training += 1
+    else:
+        index = 0
+        for file_name in tqdm(os.listdir(dataset_img_path)):
+            image_name = f"{dataset_img_path}/{file_name}"
+            image = cv2.imread(image_name)
+            label_name = f"{dataset_label_path}/{file_name}"
             label = cv2.imread(label_name, 0)
             binary_label = np.where(label == 38, 1, 0)
 
-        if index in random_set:
-            cv2.imwrite(f"{save_path}/images/validation/val_{num_validation}.jpg", image)
-            cv2.imwrite(f"{save_path}/annotations/validation/val_{num_validation}.png", label)
-            cv2.imwrite(f"{save_path}/binary_annotations/validation/val_{num_validation}.png", binary_label)
-            num_validation += 1
-        else:
-            cv2.imwrite(f"{save_path}/images/training/training_{num_training}.jpg", image)
-            cv2.imwrite(f"{save_path}/annotations/training/training_{num_training}.png", label)
-            cv2.imwrite(f"{save_path}/binary_annotations/training/training_{num_training}.png", binary_label)
-            num_training += 1
+            if index in random_set:
+                images_validation_path = f"{save_path}/images/validation"
+                annotations_validation_path = f"{save_path}/annotations/validation"
+                binary_annotations_validation_path = f"{save_path}/binary_annotations/validation"
+                for item in [images_validation_path, annotations_validation_path, binary_annotations_validation_path]:
+                    if not os.path.exists(item):
+                        os.makedirs(item, exist_ok=True)
+                cv2.imwrite(f"{images_validation_path}/val_{num_validation}.jpg", image)
+                cv2.imwrite(f"{annotations_validation_path}/val_{num_validation}.png", label)
+                cv2.imwrite(f"{binary_annotations_validation_path}/val_{num_validation}.png", binary_label)
+                num_validation += 1
+            else:
+                images_training_path = f"{save_path}/images/training"
+                annotations_training_path = f"{save_path}/annotations/training"
+                binary_annotations_training_path = f"{save_path}/binary_annotations/training"
+                for item in [images_training_path, annotations_training_path, binary_annotations_training_path]:
+                    if not os.path.exists(item):
+                        os.makedirs(item, exist_ok=True)
+                cv2.imwrite(f"{images_training_path}/training_{num_training}.jpg", image)
+                cv2.imwrite(f"{annotations_training_path}/training_{num_training}.png", label)
+                cv2.imwrite(f"{binary_annotations_training_path}/training_{num_training}.png", binary_label)
+                num_training += 1
+            index += 1
 
 
 if __name__ == '__main__':
