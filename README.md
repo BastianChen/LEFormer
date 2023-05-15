@@ -1,6 +1,11 @@
 # LEFormer: A Hybrid CNN-Transformer Architecture for Accurate Lake Extraction from Remote Sensing Imagery
 
-![](resources/overall_architecture_diagram.jpg)
+[//]: # (![]&#40;resources/overall_architecture_diagram.jpg&#41;)
+<p align="center">
+    <img src="./resources/overall_architecture_diagram.jpg" height="550">
+</p>
+
+Figure 1: Overview architecture of LEFormer, consisting of four modules: (1) a hierarchical CNN encoder that extracts local features; (2) a  hierarchical Transformer encoder that captures global features; (3) a  cross-encoder fusion module that modulates local and global features from CNN and Transformer encoders; (4) a lightweight decoder that fuses the multi-scale features from the cross-encoder fusion module to predict the lake mask accurately.
 
 The repository contains official PyTorch implementations of training and evaluation codes and pre-trained models for **LEFormer**.
 
@@ -99,18 +104,17 @@ Our implementation is mainly based on [MMSegmentaion](https://github.com/open-mm
 ## Supplement 
 ### Quantitative results of ablation study
 
-<div align="center">
-    <img src="./resources/ablation_study_1.jpg" height="600">
-</div>
 <p align="center">
-  <p align="center">
-  Figure 1: Visualization results of ablation studies on the number of Pooling Transformer Layers. L denotes the number of Pooling Transformer Layer.
+    <img src="./resources/ablation_study_1.jpg" height="600">
 </p>
 
-<div align="center">
-    <img src="./resources/ablation_study_2.jpg" height="550">
-</div>
+Figure 2: Visualization results of ablation studies on the number of Pooling Transformer Layers. **_L_** denotes the number of Pooling Transformer Layer.
+
 <p align="center">
-  <p align="center">
-  Figure 2: Visualization results of ablation studies on the CE, MSCA, TE and pooling operator modules.
+    <img src="./resources/ablation_study_2.jpg" height="550">
 </p>
+
+<p align="center">
+    Figure 3: Visualization results of ablation studies on the CE, MSCA, TE and pooling operator modules.
+</p>
+
