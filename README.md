@@ -79,6 +79,16 @@ Example: calculate ```LEFormer``` on ```Surface Water```:
 python tools/get_flops.py local_configs/leformer/leformer_256x256_SW_160k.py --shape 256 256
 ```
 
+## Acknowledgment
+
+Our implementation is mainly based on [mmsegmentaion](https://github.com/open-mmlab/mmsegmentation/tree/v0.30.0), [Segformer](https://github.com/NVlabs/SegFormer) and [PoolFormer](https://github.com/sail-sg/poolformer). Thanks for their authors.
+
+
+## LICENSE
+
+This repo is under the Apache-2.0 license. For commercial use, please contact the authors. 
+
+
 ## Supplement 
 ### Quantitative results of ablation study
 
@@ -106,14 +116,3 @@ python tools/get_flops.py local_configs/leformer/leformer_256x256_SW_160k.py --s
 [//]: # (  Figure 2: Visualization results of our proposed LEFormer and other methods on the SW and QTPL datasets for the lake mask extraction. The white circles indicate apparent differences.)
 
 [//]: # (</p>)
-
-[//]: # (## Acknowledgment)
-
-[//]: # ()
-[//]: # (Our implementation is mainly based on [mmsegmentaion]&#40;https://github.com/open-mmlab/mmsegmentation/tree/v0.30.0&#41;, [Segformer]&#40;https://github.com/NVlabs/SegFormer&#41; and [PoolFormer]&#40;https://github.com/sail-sg/poolformer&#41;. Thanks for their authors.)
-
-[//]: # ()
-[//]: # (## LICENSE)
-
-[//]: # ()
-[//]: # (This repo is under the Apache-2.0 license. For commercial use, please contact the authors.)
