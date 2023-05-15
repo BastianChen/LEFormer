@@ -21,12 +21,11 @@ cd LEFormer && pip install -e . --user
 ```
 
 ### Datasets Preparation
-The Surface Water dataset (SW dataset) is freely available for download [here](https://aistudio.baidu.com/aistudio/datasetdetail/75148).  
-The Qinghai-Tibet Plateau Lake dataset (QTPL dataset) is freely available for download [here](http://www.ncdc.ac.cn/portal/metadata/b4d9fb27-ec93-433d-893a-2689379a3fc0).  
+The Surface Water dataset (SW dataset) can be  download from [here](https://aistudio.baidu.com/aistudio/datasetdetail/75148). 
 
+The Qinghai-Tibet Plateau Lake dataset (QTPL dataset) can be  download from [here](http://www.ncdc.ac.cn/portal/metadata/b4d9fb27-ec93-433d-893a-2689379a3fc0). 
 
-- Run tools/data_split.py to randomly split your paired datasets into training and testing sets.
-- The structure of datasets are aligned as follows:
+The structure of datasets are aligned as follows:
 ```
 SW or QTPL
 
@@ -40,6 +39,17 @@ SW or QTPL
  　　├── training 
 　 　└── validation 
 ```
+Alternatively, the datasets can be recreated to randomly split daasets into training and testing sets from the original datasets. 
+
+The Original SW dataset is freely available for download [here](https://aistudio.baidu.com/aistudio/datasetdetail/75148).
+
+The Original QTPL dataset is freely available for download [here](http://www.ncdc.ac.cn/portal/metadata/b4d9fb27-ec93-433d-893a-2689379a3fc0).
+
+Example: split ```Surface Water Dataset```:
+```python
+python tools/data_split.py --dataset_type sw --dataset_path /path/to/your/dataset --save_path /path/to/save/dataset
+```
+
 
 ## Training
 
@@ -65,7 +75,7 @@ To calculate FLOPs for a model.
 
 Example: calculate ```LEFormer``` on ```Surface Water```:
 
-```bash
+```python
 python tools/get_flops.py local_configs/leformer/leformer_256x256_SW_160k.py --shape 256 256
 ```
 

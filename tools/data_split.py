@@ -45,23 +45,23 @@ def main():
         image = cv2.imread(image_name)
         if args.dataset_type == 'sw':
             label_name = f"{dataset_label_path}/{index}_vis.png"
-            gt_name = f"{dataset_path}/{index}.png"
+            binary_label_name = f"{dataset_path}/{index}.png"
             label = cv2.imread(label_name, 0)
-            gt = cv2.imread(gt_name, 0)
+            binary_label = cv2.imread(binary_label_name, 0)
         else:
             label_name = f"{dataset_label_path}/{index}.png"
             label = cv2.imread(label_name, 0)
-            gt = np.where(label == 38, 1, 0)
+            binary_label = np.where(label == 38, 1, 0)
 
         if index in random_set:
             cv2.imwrite(f"{save_path}/images/validation/val_{num_validation}.jpg", image)
             cv2.imwrite(f"{save_path}/annotations/validation/val_{num_validation}.png", label)
-            cv2.imwrite(f"{save_path}/gt/validation/val_{num_validation}.png", gt)
+            cv2.imwrite(f"{save_path}/binary_annotations/validation/val_{num_validation}.png", binary_label)
             num_validation += 1
         else:
             cv2.imwrite(f"{save_path}/images/training/training_{num_training}.jpg", image)
             cv2.imwrite(f"{save_path}/annotations/training/training_{num_training}.png", label)
-            cv2.imwrite(f"{save_path}/gt/training/training_{num_training}.png", gt)
+            cv2.imwrite(f"{save_path}/binary_annotations/training/training_{num_training}.png", binary_label)
             num_training += 1
 
 
