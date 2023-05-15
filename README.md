@@ -45,7 +45,7 @@ The Original SW dataset is freely available for download [here](https://aistudio
 
 The Original QTPL dataset is freely available for download [here](http://www.ncdc.ac.cn/portal/metadata/b4d9fb27-ec93-433d-893a-2689379a3fc0).
 
-Example: split ```Surface Water Dataset```:
+Example: split ```Surface Water```:
 ```python
 python tools/data_split.py --dataset_type sw --dataset_path /path/to/your/dataset --save_path /path/to/save/dataset
 ```
