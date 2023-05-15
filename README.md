@@ -6,7 +6,7 @@ The repository contains official PyTorch implementations of training and evaluat
 
 [//]: # (The paper is in [Here]&#40;https://arxiv.org/pdf/2209.08575.pdf&#41;.)
 
-The code is based on [MMSegmentaion v0.30.0](https://github.com/open-mmlab/mmsegmentation/tree/v0.30.0).
+The code is based on [MMSegmentaion v0.30.0](https://github.com/open-mmlab/MMSegmentation/tree/v0.30.0).
 
 ## Installation
 
@@ -39,11 +39,11 @@ SW or QTPL
  　　├── training 
 　 　└── validation 
 ```
-Alternatively, the datasets can be recreated to randomly split daasets into training and testing sets from the original datasets. 
+Alternatively, the datasets can be recreated to randomly split the datasets into training and testing sets, based on the original datasets.  
 
-The Original SW dataset is freely available for download [here](https://aistudio.baidu.com/aistudio/datasetdetail/75148).
+The original SW dataset is freely available for download [here](https://aistudio.baidu.com/aistudio/datasetdetail/75148).
 
-The Original QTPL dataset is freely available for download [here](http://www.ncdc.ac.cn/portal/metadata/b4d9fb27-ec93-433d-893a-2689379a3fc0).
+The original QTPL dataset is freely available for download [here](http://www.ncdc.ac.cn/portal/metadata/b4d9fb27-ec93-433d-893a-2689379a3fc0).
 
 Example: split ```Surface Water```:
 ```python
@@ -62,6 +62,7 @@ python tools/train.py local_configs/leformer/leformer_256x256_SW_160k.py
 ```
 
 ## Evaluation
+To evaluate the model. 
 
 Example: evaluate ```LEFormer``` on ```Surface Water```:
 
@@ -81,12 +82,13 @@ python tools/get_flops.py local_configs/leformer/leformer_256x256_SW_160k.py --s
 
 ## Acknowledgment
 
-Our implementation is mainly based on [mmsegmentaion](https://github.com/open-mmlab/mmsegmentation/tree/v0.30.0), [Segformer](https://github.com/NVlabs/SegFormer) and [PoolFormer](https://github.com/sail-sg/poolformer). Thanks for their authors.
+Our implementation is mainly based on [MMSegmentaion](https://github.com/open-mmlab/mmsegmentation/tree/v0.30.0), [Segformer](https://github.com/NVlabs/SegFormer) and [PoolFormer](https://github.com/sail-sg/poolformer). Thanks for their authors.
 
 
-## LICENSE
+[//]: # (## LICENSE)
 
-This repo is under the Apache-2.0 license. For commercial use, please contact the authors. 
+[//]: # ()
+[//]: # (This repo is under the Apache-2.0 license. For commercial use, please contact the authors. )
 
 
 ## Supplement 
