@@ -33,7 +33,6 @@ After the paper has been accepted, we will make the download links for the Surfa
 The structure of datasets are aligned as follows:
 ```
 SW or QTPL
-
 ├── annotations
 │　　├── training 
 │　　└── validation 
