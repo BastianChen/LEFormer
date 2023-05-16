@@ -205,7 +205,7 @@ class Mlp(nn.Module):
 
 
 class PoolingBlock(BaseModule):
-    """PoolFormer Block.
+    """Pooling Block.
 
     Args:
         embed_dims (int): The feature dimension.
@@ -242,7 +242,6 @@ class PoolingBlock(BaseModule):
             act_cfg=act_cfg,
             drop=drop)
 
-        # The following two techniques are useful to train deep PoolFormers.
         self.drop_path = DropPath(drop_path) if drop_path > 0. \
             else nn.Identity()
         self.layer_scale_1 = nn.Parameter(
@@ -531,7 +530,6 @@ class SpatialAttentionModule(BaseModule):
     def __init__(self, kernel_size=3):
         super(SpatialAttentionModule, self).__init__()
 
-        # assert kernel_size in (3, 7), 'kernel size must be 3 or 7'
         padding = 3 if kernel_size == 7 else 1
 
         self.conv1 = Conv2d(2, 1, kernel_size, padding=padding, bias=False)
@@ -725,7 +723,6 @@ class LEFormer(BaseModule):
         self.out_indices = out_indices
         assert max(out_indices) < self.num_stages
 
-        # transformer encoder
         dpr = [
             x.item()
             for x in torch.linspace(0, drop_path_rate, sum(num_layers))
