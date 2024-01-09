@@ -1,17 +1,13 @@
 # LEFormer: A Hybrid CNN-Transformer Architecture for Accurate Lake Extraction from Remote Sensing Imagery
 
-> This is the official implementation of our ICASSP 2024 paper [LEFormer](https://arxiv.org/abs/2308.04397).
+> The repository contains official PyTorch implementations of training and evaluation codes and pre-trained models for our ICASSP 2024 paper [LEFormer](https://arxiv.org/abs/2308.04397v2).
 
-[//]: # (![]&#40;resources/overall_architecture_diagram.jpg&#41;)
 <p align="center">
     <img src="./resources/overall_architecture_diagram.jpg">
 </p>
 
 Figure 1: Overview architecture of LEFormer, consisting of four modules: (1) a hierarchical CNN encoder that extracts local features; (2) a  hierarchical Transformer encoder that captures global features; (3) a  cross-encoder fusion module that modulates local and global features from CNN and Transformer encoders; (4) a lightweight decoder that fuses the multi-scale features from the cross-encoder fusion module to predict the lake mask accurately.
 
-The repository contains official PyTorch implementations of training and evaluation codes and pre-trained models for **LEFormer**.
-
-[//]: # (The paper is in [Here]&#40;https://arxiv.org/pdf/2209.08575.pdf&#41;.)
 
 The code is based on [MMSegmentaion v0.30.0](https://github.com/open-mmlab/MMSegmentation/tree/v0.30.0).
 
@@ -28,8 +24,6 @@ cd LEFormer && pip install -e . --user
 ```
 
 ## Datasets Preparation
-
-[//]: # (The Surface Water dataset &#40;SW dataset&#41; and Qinghai-Tibet Plateau Lake dataset &#40;QTPL dataset&#41; can be  download from [here]&#40;https://pan.baidu.com/s/1H2d6h3p3PtZw-g7PhNx9Tw?pwd=p0t7&#41;. )
 
 The structure of datasets are aligned as follows:
 ```
