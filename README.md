@@ -99,10 +99,11 @@ This repo is under the Apache-2.0 license. For commercial use, please contact th
 If you use our code or otherwise find this work useful, please cite our paper:
 
 ```text
-@article{leformer,
+@INPROCEEDINGS{leformer,
+  author={Chen, Ben and Zou, Xuechao and Zhang, Yu and Li, Jiayu and Li, Kai and Xing, Junliang and Tao, Pin},
+  booktitle={ICASSP}, 
   title={LEFormer: A Hybrid CNN-Transformer Architecture for Accurate Lake Extraction from Remote Sensing Imagery}, 
-  author={Ben Chen and Xuechao Zou and Yu Zhang and Jiayu Li and Kai Li and Pin Tao},
-  year={2023},
-  journal={arXiv:2308.04397}
+  year={2024},
+  pages={5710-5714}
 }
 ```
